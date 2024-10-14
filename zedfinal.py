@@ -52,8 +52,8 @@ def depth():
                         print(z_depth)
                         depth_ar.append(z_depth)
 
-                        if z_depth <= 2:  # Check if object is within 2 meters
-                            break
+                        if z_depth <= 2.1:  # Check if object is within 2 meters
+                            return z_depth
                     else:
                         continue
 
@@ -70,7 +70,9 @@ def depth():
 def detect():
     zed = sl.Camera()
     init_params = sl.InitParameters()
-    init_params.camera_resolution = sl.RESOLUTION.VGA
+    init_params.camera_resolution = sl.RESOLUTION.HD720
+    init_params.coordinate_units = sl.UNIT.METER
+    init_params.depth_mode = sl.DEPTH_MODE.ULTRA  # Use ULTRA for higher depth accuracy
     zed.open(init_params)
 
     runtime_params = sl.RuntimeParameters()
@@ -84,16 +86,16 @@ def detect():
             print("left")
         elif right_prob > left_prob and right_prob > up_prob and right_prob > down_prob and right_prob > none_prob:
             print("right")
-        elif up_prob > left_prob and up_prob > right_prob and up_prob > down_prob and up_prob > none_prob:
-            print("up")
-        elif down_prob > left_prob and down_prob > right_prob and down_prob > up_prob and down_prob > none_prob:
-            print("down")
+        # elif up_prob > left_prob and up_prob > right_prob and up_prob > down_prob and up_prob > none_prob:
+        #     print("up")
+        # elif down_prob > left_prob and down_prob > right_prob and down_prob > up_prob and down_prob > none_prob:
+        #     print("down")
         else:
             print("none")
 
     # Detection
     start_time = time.time()
-    duration = 15  # Run for 15 seconds
+    duration = 5  # Run for 15 seconds
 
     try:
         while True:
@@ -123,14 +125,19 @@ def detect():
 
     return output
 
-class main():
+def main():
     depth1 = depth()
-    if depth1 <= 2:
+    if depth1 <= 2.1:
         direction = detect()
 
     if direction == "left":
-        out = -1
+        print(-1)
+        return -1
     elif direction == "right":
-        out = 1
+        print(1)
+        return 1
     else:
-        out = 0
+        print(0)
+        return 0
+
+main()
