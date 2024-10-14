@@ -8,7 +8,7 @@ import cv2
 import time
 import pyrealsense2 as rs
 
-model1=YOLO("best.pt")
+model1=YOLO("bestv8.pt")
 filepath = "modelrestnet.h5"
 model2 = tf.keras.models.load_model(filepath)
 
@@ -48,7 +48,7 @@ def depth():
                     print(zDepth)
                     depth_ar.append(zDepth)
                     if(zDepth<= 2):
-                        break
+                        return zDepth
                     #segmentation
                     # mask = np.zeros(img.shape[:2], dtype=np.uint8)
                     # cv2.rectangle(mask, (x1, y1), (x2, y2), (255), thickness=-1)
@@ -91,7 +91,7 @@ def detect():
     
     #detection 
     start_time = time.time()
-    duration = 15  # Run for 5 seconds
+    duration = 5  # Run for 5 seconds
 
     try:
         while True:
@@ -133,3 +133,4 @@ elif(direction == "right"):
     out=1
 else:
     out=0
+print(out)

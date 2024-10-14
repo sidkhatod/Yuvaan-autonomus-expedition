@@ -8,7 +8,7 @@ import cv2
 import time
 import pyzed.sl as sl
 
-model1 = YOLO("best.pt")
+model1 = YOLO("bestv8.pt")
 filepath = "modelrestnet.h5"
 model2 = tf.keras.models.load_model(filepath)
 
