@@ -84,18 +84,22 @@ def detect():
         down_prob, left_prob, right_prob, up_prob = array[0][:4]
         if left_prob > right_prob and left_prob > up_prob and left_prob > down_prob and left_prob > none_prob:
             print("left")
+            return "left"
         elif right_prob > left_prob and right_prob > up_prob and right_prob > down_prob and right_prob > none_prob:
             print("right")
+            return "right"
         # elif up_prob > left_prob and up_prob > right_prob and up_prob > down_prob and up_prob > none_prob:
         #     print("up")
         # elif down_prob > left_prob and down_prob > right_prob and down_prob > up_prob and down_prob > none_prob:
         #     print("down")
         else:
             print("none")
+            return "none"
 
     # Detection
     start_time = time.time()
-    duration = 5  # Run for 15 seconds
+    duration = 5  # Run for 5 seconds
+    dir = []
 
     try:
         while True:
@@ -108,7 +112,8 @@ def detect():
                 img = np.expand_dims(img, axis=0)
 
                 output = model2.predict(img)  # Perform prediction using the loaded model
-                array2dir(output)
+                out = array2dir(output)
+                dir.append(out)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
@@ -119,11 +124,25 @@ def detect():
                 print(f"Stopping after {duration} seconds.")
                 break
 
+
     finally:
         zed.close()
         cv2.destroyAllWindows()
 
-    return output
+    count_r=0
+    count_l=0
+    for i in dir:
+        if(i == "right"):
+            count_r +=1
+        elif(i == "left"):
+            count_l += 1
+        
+    if((count_r == 0) and (count_l==0)):
+        return "none"
+    elif(count_r>count_l):
+        return "right "
+    else:
+        return "left"
 
 def main():
     depth1 = depth()
