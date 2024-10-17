@@ -1,4 +1,3 @@
-import torch
 import numpy as np
 from ultralytics import YOLO
 import matplotlib.pyplot as plt
